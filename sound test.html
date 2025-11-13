@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Example Audio</title>
+    <style>
+          #playButton {
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="playButton">Example</button>
+
+    <script>
+        // 1st Step: initalizing audio context
+        // Extremely important because this is the start of utilizing web audio api
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // 2nd step: Step to define the core function of the sound
+        function playSimpleTone() {
+            // This is to check whether the state of the audio context is suspended, if so it is resumed. 
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            // 3rd step: Creating the basic sound componenets
+
+            // Defining oscillator as a variable to create an oscillator 
+            const oscillator = audioCtx.createOscillator();
+            
+            // Setting he frequency to a specific value that resembles middle C in music
+            oscillator.frequency.setValueAtTime(261.63, audioCtx.currentTime); 
+            
+            // Set up the oscillator wave type, in this example sine is chosen
+            oscillator.type = 'sine'; 
+
+            // Gain node is for controlling the volume along with preventing clicks
+            const gainNode = audioCtx.createGain();
+
+            // Set the volume to 0 (silent) at the current time
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            
+            // Fade the volume up to 0.5 over 0.01 seconds 
+            gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.01); 
+            
+            // Fade the volume down to almost zero (0.001) over 0.5 seconds 
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+
+
+            // Connecting and starting every component
+            
+            // Connect the oscillator to the gain volume control
+            oscillator.connect(gainNode);
+            
+            // Connect the gain control to the speakers 
+            gainNode.connect(audioCtx.destination); 
+
+            // Start the sound immediately
+            oscillator.start();
+            
+            // Stop the sound after 0.5 seconds which is the duration of the sound
+            oscillator.stop(audioCtx.currentTime + 0.5); 
+        }
+
+        // Attach the function in the button
+        document.getElementById('playButton').addEventListener('click', playSimpleTone);
+
+    </script>
+
+</body>
+</html>
