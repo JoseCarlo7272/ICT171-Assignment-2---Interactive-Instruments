@@ -12,3 +12,5 @@ it is proven that relying on external sources for music theory is a much better 
 Although the entire purpose of this tool is to allow people to learn how to utilize and understand these instruments
 without having to buy a physical instrument, not when they are ready, using tools like these allow people to know whether
 they want to invest their time and money on learning an instrument.
+
+Google Drive Link For Video Explanation: https://drive.google.com/file/d/1V6-H97NiZQIDv4kq1yr-fTa9JTxttqjT/view
