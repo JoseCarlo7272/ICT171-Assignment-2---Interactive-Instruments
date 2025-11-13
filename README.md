@@ -1,3 +1,8 @@
+Jose Carlo
+ID: 35407722
+http://www.171interactiveinstruments.xyz/
+http://142.93.168.29/
+
 171 Assignment 2 Cloud Project
 Hello my name is Jose, in this github repository, you are viewing my cloud project known as interactive instruments.
 This project consists of having the option to play and utilize 4 instruments that of which are piano, guitar, drums and violin.
