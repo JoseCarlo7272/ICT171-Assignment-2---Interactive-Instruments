@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Interactive Instruments</title>
+<style type="text/css">
+
+/* home button styles */
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 12px 24px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 0.62em; 
+    text-decoration: none; 
+    font-family: sans-serif;
+    font-weight: bold;
+    color: black;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.8); 
+    z-index: 1000; 
+    transition: all 0.1s ease;
+}
+
+.home-btn:hover {
+    background-color: #f2f2f2;
+    transform: translateY(-2px);
+    box-shadow: 3px 5px 0px rgba(0,0,0,0.8);
+}
+
+.home-btn:active {
+    transform: translateY(3px); 
+    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+}
+
+/* piano background container style */
+.pianobg {
+    border: 10px solid #FF3C3C;
+    position: absolute; 
+    transform: translate(-50%, -50%); 
+    left: 50%;
+    top: 50%;
+    padding: 1em;
+    width: auto; 
+    height: 350px;
+    border-radius: 0.62em;
+    background-color: #FF8080;
+    user-select: none; 
+}
+
+.keyboard-wrapper {
+    position: relative; 
+    display: flex; 
+    justify-content: center; 
+    width: max-content; 
+    padding-top: 5em; 
+    margin: 0 auto;
+}
+
+/* styles for both black and white keys */
+
+.white-keys {
+    border: 2px solid black;
+    width: 4.57em;
+    height: 16em; 
+    cursor: pointer; 
+    border-radius: 0.62em;
+    background-color: white;
+    margin-right: -2px; 
+    z-index: 1;
+    transition: all 0.1s ease; 
+}
+
+.white-keys:hover {
+    background-color: #f2f2f2; 
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+    z-index: 5; 
+    position: relative;
+}
+
+.white-keys:active {
+    background-color: #e0e0e0; /* changes color when clicked */
+    transform: translateY(2px); /* Moves down slightly */
+}
+
+.black-keys {
+    border: 2px solid black;
+    width: 2.7em;
+    height: 12em; 
+    cursor: pointer; 
+    border-radius: 0.62em;
+    background-color: black;
+    position: absolute;
+    top: 5em; 
+    z-index: 10; 
+    transition: all 0.1s ease; 
+}
+
+.black-keys:hover {
+    background-color: #333; 
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6); 
+    z-index: 20; 
+}
+
+.black-keys:active {
+    background-color: #222;
+    transform: translateY(2px); 
+}
+
+/* positions for all the octaves */
+
+/* OCTAVE 1 */
+.cs1 { left: calc( (4.57em + 2px) * 1 - 1.35em - 1px ); }
+.ds1 { left: calc( (4.57em + 2px) * 2 - 1.35em - 1px ); }
+
+.fs1 { left: calc( (4.57em + 2px) * 4 - 1.35em - 1px ); }
+.gs1 { left: calc( (4.57em + 2px) * 5 - 1.35em - 1px ); }
+.as1 { left: calc( (4.57em + 2px) * 6 - 1.35em - 1px ); }
+
+/* OCTAVE 2 */
+.cs2 { left: calc( (4.57em + 2px) * 8 - 1.35em - 1px ); }
+.ds2 { left: calc( (4.57em + 2px) * 9 - 1.35em - 1px ); }
+
+.fs2 { left: calc( (4.57em + 2px) * 11 - 1.35em - 1px ); }
+.gs2 { left: calc( (4.57em + 2px) * 12 - 1.35em - 1px ); }
+.as2 { left: calc( (4.57em + 2px) * 13 - 1.35em - 1px ); }
+
+/* OCTAVE 3 */
+.cs3 { left: calc( (4.57em + 2px) * 15 - 1.35em - 1px ); }
+.ds3 { left: calc( (4.57em + 2px) * 16 - 1.35em - 1px ); }
+
+.fs3 { left: calc( (4.57em + 2px) * 18 - 1.35em - 1px ); }
+.gs3 { left: calc( (4.57em + 2px) * 19 - 1.35em - 1px ); }
+.as3 { left: calc( (4.57em + 2px) * 20 - 1.35em - 1px ); }
+
+
+/* gradient background */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+body {
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #FF6F61, #E8A87C, #4040a1, #A7226E);
+    background-size: 400% 400%; 
+    animation: gradientShift 15s ease infinite; 
+    margin: 0; 
+}
+.auto-style1 { text-align: center; }
+
+</style>
+</head>
+
+<body>
+
+<a href="Homepage.html" class="home-btn">🏠 Home</a>
+
+<div class="auto-style1"></div>
+
+<div class="pianobg">
+    <div class="keyboard-wrapper">
+        
+        <div class="white-keys" id="key-c1"></div> 
+        <div class="white-keys" id="key-d1"></div>
+        <div class="white-keys" id="key-e1"></div>
+        <div class="white-keys" id="key-f1"></div>
+        <div class="white-keys" id="key-g1"></div>
+        <div class="white-keys" id="key-a1"></div>
+        <div class="white-keys" id="key-b1"></div>
+        
+        <div class="white-keys" id="key-c2"></div> 
+        <div class="white-keys" id="key-d2"></div>
+        <div class="white-keys" id="key-e2"></div>
+        <div class="white-keys" id="key-f2"></div>
+        <div class="white-keys" id="key-g2"></div>
+        <div class="white-keys" id="key-a2"></div>
+        <div class="white-keys" id="key-b2"></div>
+
+        <div class="white-keys" id="key-c3"></div> 
+        <div class="white-keys" id="key-d3"></div>
+        <div class="white-keys" id="key-e3"></div>
+        <div class="white-keys" id="key-f3"></div>
+        <div class="white-keys" id="key-g3"></div>
+        <div class="white-keys" id="key-a3"></div>
+        <div class="white-keys" id="key-b3"></div>
+
+        <div class="black-keys cs1" id="key-cs1"></div>
+        <div class="black-keys ds1" id="key-ds1"></div>
+        
+        <div class="black-keys fs1" id="key-fs1"></div>
+        <div class="black-keys gs1" id="key-gs1"></div>
+        <div class="black-keys as1" id="key-as1"></div>
+
+        <div class="black-keys cs2" id="key-cs2"></div>
+        <div class="black-keys ds2" id="key-ds2"></div>
+        
+        <div class="black-keys fs2" id="key-fs2"></div>
+        <div class="black-keys gs2" id="key-gs2"></div>
+        <div class="black-keys as2" id="key-as2"></div>
+
+        <div class="black-keys cs3" id="key-cs3"></div>
+        <div class="black-keys ds3" id="key-ds3"></div>
+        
+        <div class="black-keys fs3" id="key-fs3"></div>
+        <div class="black-keys gs3" id="key-gs3"></div>
+        <div class="black-keys as3" id="key-as3"></div>
+
+    </div>
+</div>
+
+<script>
+// setting up the audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// 2. mapping the ids with specific frequencies
+const notes = {
+    // Octave 1 with middle C
+    "key-c1": 261.63, 
+    "key-cs1": 277.18,
+    "key-d1": 293.66,
+    "key-ds1": 311.13,
+    "key-e1": 329.63,
+    "key-f1": 349.23,
+    "key-fs1": 369.99,
+    "key-g1": 392.00,
+    "key-gs1": 415.30,
+    "key-a1": 440.00,
+    "key-as1": 466.16,
+    "key-b1": 493.88,
+
+    // Octave 2
+    "key-c2": 523.25,
+    "key-cs2": 554.37,
+    "key-d2": 587.33,
+    "key-ds2": 622.25,
+    "key-e2": 659.25,
+    "key-f2": 698.46,
+    "key-fs2": 739.99,
+    "key-g2": 783.99,
+    "key-gs2": 830.61,
+    "key-a2": 880.00,
+    "key-as2": 932.33,
+    "key-b2": 987.77,
+
+    // Octave 3
+    "key-c3": 1046.50,
+    "key-cs3": 1108.73,
+    "key-d3": 1174.66,
+    "key-ds3": 1244.51,
+    "key-e3": 1318.51,
+    "key-f3": 1396.91,
+    "key-fs3": 1479.98,
+    "key-g3": 1567.98,
+    "key-gs3": 1661.22,
+    "key-a3": 1760.00,
+    "key-as3": 1864.66,
+    "key-b3": 1975.53
+};
+
+function playNote(frequency) {
+    
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
+    // main oscilattor
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'triangle'; 
+    oscillator.frequency.value = frequency;
+
+    
+    const gainNode = audioCtx.createGain();
+    
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    
+    gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.01);
+    
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+ 
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 1); 
+}
+
+// click listeners
+const allKeys = document.querySelectorAll('.white-keys, .black-keys');
+
+allKeys.forEach(key => {
+    key.addEventListener('mousedown', () => { 
+        const noteId = key.id;
+        const freq = notes[noteId];
+        if (freq) {
+            playNote(freq);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

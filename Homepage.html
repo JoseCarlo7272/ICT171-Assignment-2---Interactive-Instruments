@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+<title>Interactive Instruments</title>
+<style type="text/css">
+.newStyle1 {
+	font-family: "Lucida Calligraphy";
+	font-size: 90px;
+	line-height: normal;
+	text-align: center;
+	color: white
+}
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+body {
+    
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #FF6F61, #E8A87C, #4040a1, #A7226E);
+    background-size: 400% 400%; 
+    animation: gradientShift 15s ease infinite; 
+    
+    margin: 0; }
+.auto-style1 {
+	text-align: center;
+}
+button {
+    padding: 20px 40px; 
+    font-size: 1.5em; 
+    border-radius: 12px; 
+    cursor: pointer;
+    margin: 5px; }
+</style>
+</head>
+
+<body>
+
+<div class="auto-style1">
+
+<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1">&nbsp;</p>
+	<p class="auto-style1"><span class="newStyle1">Interactive Instruments</span></p>
+	
+<div>
+<button onclick="window.location.href='piano.html'" style="width: 300px; height: 300px; font-size: 40px; background-color: white">Piano</button>
+<button onclick="window.location.href='guitar.html'" style="width: 300px; height: 300px; font-size: 40px; background-color: white">Guitar</button>
+<button onclick="window.location.href='drums.html'" style="width: 300px; height: 300px; font-size: 40px; background-color: white">Drums</button>
+<button onclick="window.location.href='violin.html'" style="width: 300px; height: 300px; font-size: 40px; background-color: white">Violin</button></div>
+
+</div>
+
+</body>
+
+</html>

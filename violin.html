@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Interactive Instruments - Violin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+/* home button style */
+.home-btn {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	padding: 12px 24px;
+	background-color: white;
+	border: 2px solid black;
+	border-radius: 0.62em;
+	text-decoration: none;
+	font-family: sans-serif;
+	font-weight: bold;
+	color: black;
+	box-shadow: 3px 3px 0px rgba(0,0,0,0.8);
+	z-index: 1000;
+	transition: all 0.1s ease;
+}
+
+.home-btn:hover {
+    background-color: #f2f2f2;
+    transform: translateY(-2px);
+    box-shadow: 3px 5px 0px rgba(0,0,0,0.8);
+}
+
+.home-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+}
+
+/* violin background css */
+.violin-bg {
+    border: 10px solid #6A3805; 
+    position: absolute; 
+    transform: translate(-50%, -50%); 
+    left: 50%;
+    top: 45%; 
+    padding: 2em;
+    width: 80vw; 
+    max-width: 1000px;
+    height: auto;
+    border-radius: 0.62em;
+    background-color: #C67605; 
+    user-select: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.fingerboard {
+    position: relative; 
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    width: 100%; 
+    margin: 0 auto;
+    background: #111; 
+    border-radius: 5px;
+    padding: 1em 0;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    height: 180px; 
+}
+
+/* string css for visuals */
+.string {
+    display: flex; 
+    flex-direction: row;
+    width: 100%;
+    height: 30px;
+    justify-content: space-around;
+    align-items: center;
+    position: relative; 
+    margin: 5px 0;
+}
+
+/* Visual string line */
+.string::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px; 
+    background-color: #DADADA; 
+    border: 1px solid #404040;
+    border-radius: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    pointer-events: none; 
+}
+
+/* button for notes */
+.note-controls {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    height: 80px; 
+    user-select: none;
+}
+
+.note-btn {
+    border: 2px solid black;
+    width: 3.5em;
+    height: 100%; 
+    cursor: pointer; 
+    border-radius: 0.62em;
+    background-color: white;
+    margin-right: -2px; 
+    z-index: 1;
+    transition: all 0.1s ease;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding-top: 40px; 
+    box-shadow: 0 4px 0 rgba(0,0,0,0.8);
+}
+.note-btn:active {
+    background-color: #e0e0e0;
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.8);
+}
+
+.note-btn.black {
+    width: 2.7em;
+    height: 65%; 
+    background-color: black;
+    color: white;
+    position: relative;
+    z-index: 10; 
+    margin: 0 -1.35em; 
+    padding-top: 10px;
+    font-size: 1em;
+}
+.note-btn.black:active {
+    background-color: #333;
+    transform: translateY(2px);
+}
+
+
+/* background gradient moving */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+body {
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #FF6F61, #E8A87C, #4040a1, #A7226E);
+    background-size: 400% 400%; 
+    animation: gradientShift 15s ease infinite; 
+    margin: 0; 
+    overflow: hidden; 
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- home button -->
+<a href="Homepage.html" class="home-btn">🏠 Home</a>
+
+
+<div class="violin-bg">
+    <div class="fingerboard">
+        
+        <div class="string"></div>
+        <div class="string"></div>
+        <div class="string"></div>
+        <div class="string"></div>
+    </div>
+</div>
+
+<!-- button notes -->
+<div class="note-controls">
+    <button class="note-btn" id="btn-c4">C</button>
+    <button class="note-btn black" id="btn-cs4">C#</button>
+    <button class="note-btn" id="btn-d4">D</button>
+    <button class="note-btn black" id="btn-ds4">D#</button>
+    <button class="note-btn" id="btn-e4">E</button>
+    <button class="note-btn" id="btn-f4">F</button>
+    <button class="note-btn black" id="btn-fs4">F#</button>
+    <button class="note-btn" id="btn-g4">G</button>
+    <button class="note-btn black" id="btn-gs4">G#</button>
+    <button class="note-btn" id="btn-a4">A</button>
+    <button class="note-btn black" id="btn-as4">A#</button>
+    <button class="note-btn" id="btn-b4">B</button>
+    <button class="note-btn" id="btn-c5">C</button>
+    
+    <button class="note-btn black" id="btn-cs5">C#</button>
+    <button class="note-btn" id="btn-d5">D</button>
+    <button class="note-btn black" id="btn-ds5">D#</button>
+    <button class="note-btn" id="btn-e5">E</button>
+    <button class="note-btn" id="btn-f5">F</button>
+    <button class="note-btn black" id="btn-fs5">F#</button>
+    <button class="note-btn" id="btn-g5">G</button>
+    <button class="note-btn black" id="btn-gs5">G#</button>
+    <button class="note-btn" id="btn-a5">A</button>
+    <button class="note-btn black" id="btn-as5">A#</button>
+    <button class="note-btn" id="btn-b5">B</button>
+    <button class="note-btn" id="btn-c6">C</button>
+</div>
+
+
+<script>
+// setting up audio context
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// button ids have specific frequencies
+const notes = {
+   
+    "btn-c4": 261.63,
+    "btn-cs4": 277.18,
+    "btn-d4": 293.66,
+    "btn-ds4": 311.13,
+    "btn-e4": 329.63,
+    "btn-f4": 349.23,
+    "btn-fs4": 369.99,
+    "btn-g4": 392.00,
+    "btn-gs4": 415.30,
+    "btn-a4": 440.00,
+    "btn-as4": 466.16,
+    "btn-b4": 493.88,
+    "btn-c5": 523.25,
+  
+    "btn-cs5": 554.37,
+	"btn-d5": 587.33,
+    "btn-ds5": 622.25,
+    "btn-e5": 659.25,
+    "btn-f5": 698.46,
+    "btn-fs5": 739.99,
+    "btn-g5": 783.99,
+    "btn-gs5": 830.61,
+    "btn-a5": 880.00,
+    "btn-as5": 932.33,
+    "btn-b5": 987.77,
+    "btn-c6": 1046.50
+};
+
+
+function playNote(frequency) {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    const now = audioCtx.currentTime;
+
+    // main oscillator
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'sawtooth'; 
+    oscillator.frequency.value = frequency;
+
+    
+   
+    const lfo = audioCtx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = 6; 
+
+   
+    
+    const lfoGain = audioCtx.createGain();
+    lfoGain.gain.value = 10; 
+    
+    
+    lfo.connect(lfoGain);
+    lfoGain.connect(oscillator.detune);
+
+    
+    const gainNode = audioCtx.createGain();
+    
+    
+    gainNode.gain.setValueAtTime(0, now);
+    // Slow ish attack (0.1s)
+    gainNode.gain.linearRampToValueAtTime(0.4, now + 0.1); 
+    // Long decay (1.5s total)
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    
+    const stopTime = now + 1.6;
+    lfo.start(now);
+    oscillator.start(now);
+    
+    lfo.stop(stopTime);
+    oscillator.stop(stopTime); // indicates note lasts for 1.6 seconds
+}
+
+
+const allNoteButtons = document.querySelectorAll('.note-btn');
+
+allNoteButtons.forEach(button => {
+    button.addEventListener('mousedown', () => { 
+        const noteId = button.id;
+        const freq = notes[noteId];
+ 
+        if (freq) {
+            playNote(freq);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

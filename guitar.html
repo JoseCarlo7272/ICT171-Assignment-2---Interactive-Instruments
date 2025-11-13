@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>Interactive Instruments - Guitar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+/*This section is for the home button, it describes how the button will look and function */
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 12px 24px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 0.62em;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: black;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.8);
+    z-index: 1000;
+    transition: all 0.1s ease;
+}
+
+.home-btn:hover {
+    background-color: #f2f2f2;
+    transform: translateY(-2px);
+    box-shadow: 3px 5px 0px rgba(0,0,0,0.8);
+}
+
+.home-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+}
+
+/* guitar background style */
+.guitar-bg {
+    border: 10px solid #8B4513; 
+    position: absolute; 
+    transform: translate(-50%, -50%); 
+    left: 50%;
+    top: 45%; 
+    padding: 2em;
+    width: 80vw; 
+    max-width: 1000px;
+    height: auto;
+    border-radius: 0.62em;
+    background-color: #D2B48C; 
+    user-select: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.fretboard {
+    position: relative; 
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    width: 100%; 
+    margin: 0 auto;
+    background: linear-gradient(90deg, #6B4226, #4E2A1A); 
+    border-radius: 5px;
+    padding: 1em 0;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* strings */
+.string {
+    display: flex; 
+    flex-direction: row;
+    width: 100%;
+    height: 30px; 
+    justify-content: space-around;
+    align-items: center;
+    position: relative; 
+    margin: 5px 0;
+}
+
+/* strign line visuals */
+.string::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px; 
+    background-color: #E0E0E0; 
+    border: 1px solid #505050;
+    border-radius: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    pointer-events: none; 
+}
+
+
+.note-fret {
+    flex-basis: 100%; 
+    height: 40px; 
+    border-radius: 50%; 
+    z-index: 10;
+    transition: all 0.05s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; 
+}
+
+.marker::after {
+    content: '';
+    width: 15px;
+    height: 15px;
+    background-color: #b0a080;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -22px; 
+    z-index: 5;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* dot double maker */
+.marker-double::after, .marker-double::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    background-color: #b0a080;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -22px; 
+    z-index: 5;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
+/* Position for double dots */
+.marker-double::before { bottom: 12px; }
+.marker-double::after { bottom: -57px; }
+
+
+/* Visual Fret Wires */
+.fret-wires {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    pointer-events: none; 
+}
+.fret-wire {
+    width: 5px;
+    height: 100%;
+    background: #C0C0C0; 
+    border: 1px solid #333;
+    border-radius: 2px;
+     transform: translateX(50%);
+}
+
+/* button note controls */
+.note-controls {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    height: 80px; 
+    user-select: none;
+}
+
+.note-btn {
+    border: 2px solid black;
+    width: 3.5em;
+    height: 100%; 
+    cursor: pointer; 
+    border-radius: 0.62em;
+    background-color: white;
+    margin-right: -2px; 
+    z-index: 1;
+    transition: all 0.1s ease;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding-top: 40px; 
+    box-shadow: 0 4px 0 rgba(0,0,0,0.8);
+}
+.note-btn:active {
+    background-color: #e0e0e0;
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.8);
+}
+
+.note-btn.black {
+    width: 2.7em;
+    height: 65%; 
+    background-color: black;
+    color: white;
+    position: relative;
+    z-index: 10; 
+    margin: 0 -1.35em; 
+    padding-top: 10px;
+    font-size: 1em;
+}
+.note-btn.black:active {
+    background-color: #333;
+    transform: translateY(2px);
+}
+
+
+/* background gradient shifting again */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+body {
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #FF6F61, #E8A87C, #4040a1, #A7226E);
+    background-size: 400% 400%; 
+    animation: gradientShift 15s ease infinite; 
+    margin: 0; 
+    overflow: hidden; 
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- home button -->
+<a href="Homepage.html" class="home-btn">🏠 Home</a>
+
+
+<div class="guitar-bg">
+    <div class="fretboard">
+        
+        <div class="fret-wires">
+            
+            <div class="fret-wire" style="background: #eee; width: 10px; transform: translateX(-50%);"></div> 
+            
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+            <div class="fret-wire"></div>
+        </div>
+
+        <!-- All mentioned strings ( E, B, G, D, A, E) -->
+        
+        <div class="string" id="string-1">
+            <div class="note-fret" data-fret="0"></div>
+            <div class="note-fret" data-fret="1"></div>
+            <div class="note-fret" data-fret="2"></div>
+            <div class="note-fret" data-fret="3"></div>
+            <div class="note-fret" data-fret="4"></div>
+            <div class="note-fret" data-fret="5"></div>
+            <div class="note-fret" data-fret="6"></div>
+            <div class="note-fret" data-fret="7"></div>
+            <div class="note-fret" data-fret="8"></div>
+            <div class="note-fret" data-fret="9"></div>
+            <div class="note-fret" data-fret="10"></div>
+            <div class="note-fret" data-fret="11"></div>
+            <div class="note-fret" data-fret="12"></div>
+        </div>
+        <!-- String 2: B (B3) -->
+        <div class="string" id="string-2">
+            <div class="note-fret" data-fret="0"></div>
+            <div class="note-fret" data-fret="1"></div>
+            <div class="note-fret" data-fret="2"></div>
+            <div class="note-fret" data-fret="3"></div>
+            <div class="note-fret" data-fret="4"></div>
+            <div class="note-fret" data-fret="5"></div>
+            <div class="note-fret" data-fret="6"></div>
+            <div class="note-fret" data-fret="7"></div>
+            <div class="note-fret" data-fret="8"></div>
+            <div class="note-fret" data-fret="9"></div>
+            <div class="note-fret" data-fret="10"></div>
+            <div class="note-fret" data-fret="11"></div>
+            <div class="note-fret" data-fret="12"></div>
+        </div>
+        <!-- String 3: G (G3) -->
+        <div class="string" id="string-3">
+            <div class="note-fret" data-fret="0"></div>
+            <div class="note-fret" data-fret="1"></div>
+            <div class="note-fret" data-fret="2"></div>
+            <div class="note-fret marker" data-fret="3"></div>
+            <div class="note-fret" data-fret="4"></div>
+            <div class="note-fret marker" data-fret="5"></div>
+            <div class="note-fret" data-fret="6"></div>
+            <div class="note-fret marker" data-fret="7"></div>
+            <div class="note-fret" data-fret="8"></div>
+            <div class="note-fret marker" data-fret="9"></div>
+            <div class="note-fret" data-fret="10"></div>
+            <div class="note-fret" data-fret="11"></div>
+            <div class="note-fret marker-double" data-fret="12"></div>
+        </div>
+        <!-- String 4: D (D3) -->
+        <div class="string" id="string-4">
+            <div class="note-fret" data-fret="0"></div>
+            <div class="note-fret" data-fret="1"></div>
+            <div class="note-fret" data-fret="2"></div>
+            <div class="note-fret" data-fret="3"></div>
+            <div class="note-fret" data-fret="4"></div>
+            <div class="note-fret" data-fret="5"></div>
+            <div class="note-fret" data-fret="6"></div>
+            <div class="note-fret" data-fret="7"></div>
+            <div class="note-fret" data-fret="8"></div>
+            <div class="note-fret" data-fret="9"></div>
+            <div class="note-fret" data-fret="10"></div>
+            <div class="note-fret" data-fret="11"></div>
+            <div class="note-fret" data-fret="12"></div>
+        </div>
+        <!-- String 5: A (A2) -->
+        <div class="string" id="string-5">
+            <div class="note-fret" data-fret="0"></div>
+            <div class="note-fret" data-fret="1"></div>
+            <div class="note-fret" data-fret="2"></div>
+            <div class="note-fret" data-fret="3"></div>
+            <div class="note-fret" data-fret="4"></div>
+            <div class="note-fret" data-fret="5"></div>
+            <div class="note-fret" data-fret="6"></div>
+            <div class="note-fret" data-fret="7"></div>
+            <div class="note-fret" data-fret="8"></div>
+            <div classs="note-fret" data-fret="9"></div>
+            <div class="note-fret" data-fret="10"></div>
+            <div class="note-fret" data-fret="11"></div>
+            <div class="note-fret" data-fret="12"></div>
+        </div>
+        <!-- String 6: Low E (E2) -->
+        <div class="string" id="string-6">
+            <div class="note-fret" data-fret="0"></div>
+            <div class="note-fret" data-fret="1s"></div>
+            <div class="note-fret" data-fret="2"></div>
+            <div class="note-fret" data-fret="3"></div>
+            <div class="note-fret" data-fret="4"></div>
+            <div class="note-fret" data-fret="5"></div>
+            <div class="note-fret" data-fret="6"></div>
+            <div class="note-fret" data-fret="7"></div>
+            <div class="note-fret" data-fret="8"></div>
+            <div class="note-fret" data-fret="9"></div>
+            <div class="note-fret" data-fret="10"></div>
+            <div class="note-fret" data-fret="11"></div>
+            <div class="note-fret" data-fret="12"></div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- buttons for notes -->
+<div class="note-controls">
+    <button class="note-btn" id="btn-c4">C</button>
+    <button class="note-btn black" id="btn-cs4">C#</button>
+    <button class="note-btn" id="btn-d4">D</button>
+    <button class="note-btn black" id="btn-ds4">D#</button>
+    <button class="note-btn" id="btn-e4">E</button>
+    <button class="note-btn" id="btn-f4">F</button>
+    <button class="note-btn black" id="btn-fs4">F#</button>
+    <button class="note-btn" id="btn-g4">G</button>
+    <button class="note-btn black" id="btn-gs4">G#</button>
+    <button class="note-btn" id="btn-a4">A</button>
+    <button class="note-btn black" id="btn-as4">A#</button>
+    <button class="note-btn" id="btn-b4">B</button>
+    <button class="note-btn" id="btn-c5">C</button>
+    <!-- second octave -->
+    <button class="note-btn black" id="btn-cs5">C#</button>
+    <button class="note-btn" id="btn-d5">D</button>
+    <button class="note-btn black" id="btn-ds5">D#</button>
+    <button class="note-btn" id="btn-e5">E</button>
+    <button class="note-btn" id="btn-f5">F</button>
+    <button class="note-btn black" id="btn-fs5">F#</button>
+    <button class="note-btn" id="btn-g5">G</button>
+    <button class="note-btn black" id="btn-gs5">G#</button>
+    <button class="note-btn" id="btn-a5">A</button>
+    <button class="note-btn black" id="btn-as5">A#</button>
+    <button class="note-btn" id="btn-b5">B</button>
+    <button class="note-btn" id="btn-c6">C</button>
+</div>
+
+
+<script>
+// audio context being set up
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// 2. each button having their own frequency
+const notes = {
+    // C4 Octave (Middle C)
+    "btn-c4": 261.63,
+    "btn-cs4": 277.18,
+    "btn-d4": 293.66,
+    "btn-ds4": 311.13,
+    "btn-e4": 329.63,
+    "btn-f4": 349.23,
+    "btn-fs4": 369.99,
+    "btn-g4": 392.00,
+    "btn-gs4": 415.30,
+    "btn-a4": 440.00,
+    "btn-as4": 466.16,
+    "btn-b4": 493.88,
+    "btn-c5": 523.25,
+    "btn-cs5": 554.37,
+    "btn-d5": 587.33,
+    "btn-ds5": 622.25,
+    "btn-e5": 659.25,
+    "btn-f5": 698.46,
+    "btn-fs5": 739.99,
+    "btn-g5": 783.99,
+    "btn-gs5": 830.61,
+    "btn-a5": 880.00,
+    "btn-as5": 932.33,
+    "btn-b5": 987.77,
+    "btn-c6": 1046.50
+};
+
+
+function playNote(frequency) {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
+    const oscillator = audioCtx.createOscillator();
+    // sawtooth is an option in web audio api to make it sound like a guitar
+    oscillator.type = 'sawtooth'; 
+    oscillator.frequency.value = frequency;
+
+    const gainNode = audioCtx.createGain();
+    
+    
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+ 
+    gainNode.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + 0.01);
+  
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.7); // when pressing note it lasts for 0.7 seconds
+}
+
+// click listeners
+const allNoteButtons = document.querySelectorAll('.note-btn');
+
+allNoteButtons.forEach(button => {
+    button.addEventListener('mousedown', () => { 
+        
+        const noteId = button.id;
+        
+       
+        const freq = notes[noteId];
+        
+        if (freq) {
+            playNote(freq);
+        }
+    });
+});
+</script>
+
+</body>
+</html>
